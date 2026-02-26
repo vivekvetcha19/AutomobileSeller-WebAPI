@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutomobileSeller.DTO
+namespace AutomobileSeller.DTO.Brand
 {
     public class BrandUpdateDto
     {

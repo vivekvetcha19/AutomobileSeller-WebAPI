@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
-using AutomobileSeller.DTO;
-using AutomobileSeller.DTOs;
 using AutomobileSeller.Models;
+using AutomobileSeller.DTO.Selling;
+using AutomobileSeller.DTO.Brand;
+using AutomobileSeller.DTO.CarModel;
+using AutomobileSeller.DTO.Customer;
+using AutomobileSeller.DTO.Inventory;
 
 namespace AutomobileSeller.Mappings
 {
@@ -26,6 +29,14 @@ namespace AutomobileSeller.Mappings
             CreateMap<CustomerCreateDto, Customer>();
             CreateMap<CustomerUpdateDto, Customer>();
             CreateMap<Customer, CustomerResponseDto>();
+            CreateMap<SellingCreateDto, SellingHistory>();
+
+            // Response
+            CreateMap<SellingHistory, SellingResponseDto>()
+                .ForMember(dest => dest.CustomerName,
+                    opt => opt.MapFrom(src => src.Customer.FirstName + " " + src.Customer.LastName))
+                .ForMember(dest => dest.CarModelName,
+                    opt => opt.MapFrom(src => src.CarModel.Name));
 
         }
     }

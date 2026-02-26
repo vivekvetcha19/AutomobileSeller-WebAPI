@@ -1,4 +1,4 @@
-﻿namespace AutomobileSeller.DTO
+﻿namespace AutomobileSeller.DTO.Brand
 {
     public class BrandResponseDto
     {

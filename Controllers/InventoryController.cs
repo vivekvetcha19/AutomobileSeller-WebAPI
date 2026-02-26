@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AutomobileSeller.Services;
-using AutomobileSeller.DTOs;
 using AutomobileSeller.Models;
 using AutoMapper;
+using AutomobileSeller.DTO.Inventory;
 
 namespace AutomobileSeller.Controllers
 {

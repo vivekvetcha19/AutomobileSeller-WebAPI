@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutomobileSeller.DTOs
+namespace AutomobileSeller.DTO.Customer
 {
     public class CustomerCreateDto
     {

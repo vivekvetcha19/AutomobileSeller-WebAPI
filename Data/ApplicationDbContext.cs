@@ -14,6 +14,7 @@ namespace AutomobileSeller.Data
         public DbSet<CarModel> CarModels { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<SellingHistory> SellingHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -105,6 +106,31 @@ namespace AutomobileSeller.Data
 
                 entity.Property(c => c.CreatedDate)
                       .HasDefaultValueSql("GETUTCDATE()");
+            });
+
+            modelBuilder.Entity<SellingHistory>(entity =>
+            {
+                entity.ToTable("SellingHistories");
+                entity.HasKey(s => s.Id);
+
+                entity.Property(s => s.QuantitySold)
+                      .IsRequired();
+                entity.Property(s => s.SellingPrice)
+                      .HasColumnType("decimal(18,2)")
+                      .IsRequired();
+
+                entity.Property(s => s.SoldDate)
+                      .HasDefaultValueSql("GETUTCDATE()");
+
+                entity.HasOne(s => s.Customer)
+                      .WithMany()
+                      .HasForeignKey(s => s.CustomerId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(s => s.CarModel)
+                      .WithMany()
+                      .HasForeignKey(s => s.CarModelId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

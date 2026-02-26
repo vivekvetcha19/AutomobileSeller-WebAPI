@@ -1,4 +1,4 @@
-﻿namespace AutomobileSeller.DTOs
+﻿namespace AutomobileSeller.DTO.CarModel
 {
     public class CarModelResponseDto
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AutomobileSeller.Models;
 using AutomobileSeller.Services;
-using AutomobileSeller.DTO;
 using AutoMapper;
+using AutomobileSeller.DTO.Brand;
 
 namespace AutomobileSeller.Controllers
 {

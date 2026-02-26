@@ -13,6 +13,7 @@ namespace AutomobileSeller.Data
         public DbSet<Brand> Brands { get; set; }
         public DbSet<CarModel> CarModels { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -60,6 +61,7 @@ namespace AutomobileSeller.Data
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
+            // Inventory Configuration
             modelBuilder.Entity<Inventory>(entity =>
             {
                 entity.ToTable("Inventories");
@@ -76,6 +78,33 @@ namespace AutomobileSeller.Data
                       .WithOne()
                       .HasForeignKey<Inventory>(i => i.CarModelId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Customer config
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.ToTable("Customers");
+
+                entity.HasKey(c => c.Id);
+
+                entity.Property(c => c.FirstName)
+                      .IsRequired()
+                      .HasMaxLength(100);
+
+                entity.Property(c => c.LastName)
+                      .IsRequired()
+                      .HasMaxLength(100);
+
+                entity.Property(c => c.Email)
+                      .IsRequired()
+                      .HasMaxLength(150);
+
+                entity.Property(c => c.PhoneNumber)
+                      .IsRequired()
+                      .HasMaxLength(20);
+
+                entity.Property(c => c.CreatedDate)
+                      .HasDefaultValueSql("GETUTCDATE()");
             });
         }
     }

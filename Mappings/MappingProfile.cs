@@ -23,6 +23,9 @@ namespace AutomobileSeller.Mappings
             CreateMap<Inventory, InventoryResponseDto>()
                 .ForMember(dest => dest.CarModelName,
                            opt => opt.MapFrom(src => src.CarModel.Name));
+            CreateMap<CustomerCreateDto, Customer>();
+            CreateMap<CustomerUpdateDto, Customer>();
+            CreateMap<Customer, CustomerResponseDto>();
 
         }
     }

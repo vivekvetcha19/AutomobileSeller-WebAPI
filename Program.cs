@@ -30,6 +30,8 @@ builder.Services.AddScoped<ICarModelService, CarModelService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ISellingService, SellingService>();
+builder.Services.AddScoped<IServiceHistoryService, ServiceHistoryService>();
+builder.Services.AddScoped<IInsuranceService, InsuranceService>();
 
 var app = builder.Build();
 

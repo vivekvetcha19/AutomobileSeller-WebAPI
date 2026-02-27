@@ -15,6 +15,8 @@ namespace AutomobileSeller.Data
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<SellingHistory> SellingHistories { get; set; }
+        public DbSet<ServiceHistory> ServiceHistories { get; set; }
+        public DbSet<Insurance> Insurances { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -130,6 +132,69 @@ namespace AutomobileSeller.Data
                 entity.HasOne(s => s.CarModel)
                       .WithMany()
                       .HasForeignKey(s => s.CarModelId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<ServiceHistory>(entity =>
+            {
+                entity.ToTable("ServiceHistories");
+
+                entity.HasKey(s => s.Id);
+
+                entity.Property(s => s.ServiceDescription)
+                      .IsRequired()
+                      .HasMaxLength(500);
+
+                entity.Property(s => s.ServiceCost)
+                      .HasColumnType("decimal(18,2)")
+                      .IsRequired();
+
+                entity.Property(s => s.ServiceDate)
+                      .HasDefaultValueSql("GETUTCDATE()");
+
+                entity.HasOne(s => s.Customer)
+                      .WithMany()
+                      .HasForeignKey(s => s.CustomerId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(s => s.CarModel)
+                      .WithMany()
+                      .HasForeignKey(s => s.CarModelId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<Insurance>(entity =>
+            {
+                entity.ToTable("Insurances");
+
+                entity.HasKey(i => i.Id);
+
+                entity.Property(i => i.PolicyNumber)
+                      .IsRequired()
+                      .HasMaxLength(100);
+
+                entity.Property(i => i.ProviderName)
+                      .IsRequired()
+                      .HasMaxLength(200);
+
+                entity.Property(i => i.CoverageAmount)
+                      .HasColumnType("decimal(18,2)")
+                      .IsRequired();
+
+                entity.Property(i => i.StartDate)
+                      .IsRequired();
+
+                entity.Property(i => i.ExpiryDate)
+                      .IsRequired();
+
+                entity.HasOne(i => i.Customer)
+                      .WithMany()
+                      .HasForeignKey(i => i.CustomerId)
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(i => i.CarModel)
+                      .WithMany()
+                      .HasForeignKey(i => i.CarModelId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
         }

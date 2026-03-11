@@ -3,9 +3,11 @@ using AutomobileSeller.Services;
 using AutomobileSeller.Models;
 using AutoMapper;
 using AutomobileSeller.DTO.Customer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutomobileSeller.Controllers
 {
+    [Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase

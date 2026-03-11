@@ -3,9 +3,11 @@ using AutomobileSeller.Services;
 using AutomobileSeller.Models;
 using AutoMapper;
 using AutomobileSeller.DTO.Inventory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutomobileSeller.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class InventoryController : ControllerBase

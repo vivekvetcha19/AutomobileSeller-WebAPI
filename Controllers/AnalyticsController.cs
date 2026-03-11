@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AutomobileSeller.Services;
 using AutomobileSeller.DTO.Analytics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutomobileSeller.Controllers
 {
+    
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class AnalyticsController : ControllerBase
     {

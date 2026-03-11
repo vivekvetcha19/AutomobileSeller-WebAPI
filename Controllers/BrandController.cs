@@ -3,9 +3,11 @@ using AutomobileSeller.Models;
 using AutomobileSeller.Services;
 using AutoMapper;
 using AutomobileSeller.DTO.Brand;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutomobileSeller.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BrandController : ControllerBase
@@ -21,6 +23,7 @@ namespace AutomobileSeller.Controllers
 
         // GET: api/Brand
         [HttpGet]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> GetAll()
         {
             var brands = await _brandService.GetAllAsync();
@@ -31,6 +34,7 @@ namespace AutomobileSeller.Controllers
 
         // GET: api/Brand/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> GetById(int id)
         {
             var brand = await _brandService.GetByIdAsync(id);
@@ -45,6 +49,7 @@ namespace AutomobileSeller.Controllers
 
         // POST: api/Brand
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(BrandCreateDto dto)
         {
             var brand = _mapper.Map<Brand>(dto);
@@ -58,6 +63,7 @@ namespace AutomobileSeller.Controllers
 
         // PUT: api/Brand/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, BrandUpdateDto dto)
         {
             var brand = _mapper.Map<Brand>(dto);
@@ -74,6 +80,7 @@ namespace AutomobileSeller.Controllers
 
         // DELETE: api/Brand/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _brandService.DeleteAsync(id);

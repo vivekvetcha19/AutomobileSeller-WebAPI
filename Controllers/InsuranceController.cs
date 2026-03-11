@@ -3,9 +3,12 @@ using AutomobileSeller.Services;
 using AutomobileSeller.DTO.Insurance;
 using AutomobileSeller.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutomobileSeller.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     [Route("api/[controller]")]
     [ApiController]
     public class InsuranceController : ControllerBase

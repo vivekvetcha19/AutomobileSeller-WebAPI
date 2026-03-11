@@ -18,13 +18,20 @@ namespace AutomobileSeller.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            var token = await _authService.RegisterAsync(dto);
-
-            return Ok(new
+            try
             {
-                message = "User registered successfully",
-                token = token
-            });
+                var result = await _authService.RegisterAsync(dto);
+
+                return Ok(new
+                {
+                    message = "User registered successfully",
+                    user = result
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("login")]

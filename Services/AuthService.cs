@@ -21,6 +21,7 @@ namespace AutomobileSeller.Services
             _configuration = configuration;
         }
 
+        // REGISTER USER
         public async Task<string> RegisterAsync(RegisterDto dto)
         {
             var user = new ApplicationUser
@@ -35,12 +36,17 @@ namespace AutomobileSeller.Services
 
             if (!result.Succeeded)
             {
-                throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new Exception($"User registration failed: {errors}");
             }
 
-            return await GenerateToken(user);
+            // Assign default role
+            await _userManager.AddToRoleAsync(user, "Customer");
+
+            return user.Email!;
         }
 
+        // LOGIN USER
         public async Task<string> LoginAsync(LoginDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
@@ -56,18 +62,12 @@ namespace AutomobileSeller.Services
             return await GenerateToken(user);
         }
 
+        // GENERATE JWT TOKEN
         private async Task<string> GenerateToken(ApplicationUser user)
         {
             var jwtSettings = _configuration.GetSection("Jwt");
 
-            var key = jwtSettings["Key"];
-            var issuer = jwtSettings["Issuer"];
-            var audience = jwtSettings["Audience"];
-            var duration = jwtSettings["DurationInMinutes"];
-
-            if (string.IsNullOrEmpty(key))
-                throw new Exception("JWT Key is missing in appsettings.json");
-
+            // Base Claims
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -75,17 +75,27 @@ namespace AutomobileSeller.Services
                 new Claim(ClaimTypes.Name, user.UserName ?? "")
             };
 
-            var securityKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(key));
+            // Add Role Claims
+            var roles = await _userManager.GetRolesAsync(user);
 
-            var credentials = new SigningCredentials(
-                securityKey, SecurityAlgorithms.HmacSha256);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
+            // JWT Key
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
+
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            // Create Token
             var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(duration)),
+                expires: DateTime.UtcNow.AddMinutes(
+                    Convert.ToDouble(jwtSettings["DurationInMinutes"])),
                 signingCredentials: credentials
             );
 

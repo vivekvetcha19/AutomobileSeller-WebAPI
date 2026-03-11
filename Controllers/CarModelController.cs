@@ -3,9 +3,11 @@ using AutomobileSeller.Services;
 using AutomobileSeller.Models;
 using AutoMapper;
 using AutomobileSeller.DTO.CarModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutomobileSeller.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CarModelController : ControllerBase
@@ -21,6 +23,7 @@ namespace AutomobileSeller.Controllers
 
         // GET: api/CarModel
         [HttpGet]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> GetAll()
         {
             var models = await _carModelService.GetAllAsync();
@@ -31,6 +34,7 @@ namespace AutomobileSeller.Controllers
 
         // GET: api/CarModel/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> GetById(int id)
         {
             var model = await _carModelService.GetByIdAsync(id);
@@ -45,6 +49,7 @@ namespace AutomobileSeller.Controllers
 
         // GET: api/CarModel/brand/2
         [HttpGet("brand/{brandId}")]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> GetByBrand(int brandId)
         {
             var models = await _carModelService.GetByBrandIdAsync(brandId);
@@ -56,6 +61,7 @@ namespace AutomobileSeller.Controllers
 
         // POST: api/CarModel
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CarModelCreateDto dto)
         {
             var model = _mapper.Map<CarModel>(dto);
@@ -70,6 +76,7 @@ namespace AutomobileSeller.Controllers
 
         // PUT: api/CarModel/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, CarModelUpdateDto dto)
         {
             var model = _mapper.Map<CarModel>(dto);
@@ -86,6 +93,7 @@ namespace AutomobileSeller.Controllers
 
         // DELETE: api/CarModel/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _carModelService.DeleteAsync(id);

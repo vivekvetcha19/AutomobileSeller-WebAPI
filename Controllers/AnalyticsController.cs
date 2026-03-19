@@ -7,7 +7,7 @@ namespace AutomobileSeller.Controllers
 {
     
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class AnalyticsController : ControllerBase
     {

@@ -56,6 +56,7 @@ namespace AutomobileSeller.Services
 
             existing.Name = model.Name;
             existing.Price = model.Price;
+            existing.BrandId = model.BrandId;
 
             _repository.Update(existing);
             await _repository.SaveChangesAsync();

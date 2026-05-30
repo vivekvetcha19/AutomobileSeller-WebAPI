@@ -11,5 +11,8 @@ namespace AutomobileSeller.DTO.CarModel
         [Range(0.01, double.MaxValue,
             ErrorMessage = "Price must be greater than 0.")]
         public decimal Price { get; set; }
+
+        [Required(ErrorMessage = "BrandId is required.")]
+        public int BrandId { get; set; }
     }
 }
